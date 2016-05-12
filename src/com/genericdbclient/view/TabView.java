@@ -5,6 +5,8 @@ package com.genericdbclient.view;
 
 import java.util.List;
 
+import com.genericdbclient.controller.OnEditCommitTableCellHandler;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,21 +29,27 @@ public class TabView extends Tab {
 
 	private TableView<ObservableList<String>> tableView;
 	
+	private List<String> columnsNames;
+	private List<List<String>> rowsValues;
+	
 	public TabView(String tabName, List<String> columnsNames, List<List<String>> rowsValues) {
 		
 		tableView = new TableView<>();
 		tableView.setEditable(true);
+
+		this.columnsNames = columnsNames;
+		this.rowsValues = rowsValues;
 		
-		this.addColumns(columnsNames);
+		this.addColumns();
 		
-		this.addRowsValues(rowsValues);
+		this.addRowsValues();
 		
 		this.setText(tabName);
 		
 		this.setContent(tableView);
 	}
 	
-	private void addColumns(List<String> columnsNames) {
+	private void addColumns() {
 		
 		int columnCount = columnsNames.size();
 		
@@ -63,12 +71,13 @@ public class TabView extends Tab {
 			});
 			
 			column.setCellFactory(TextFieldTableCell.forTableColumn());
+			column.setOnEditCommit(new OnEditCommitTableCellHandler(this));
 			
 			tableView.getColumns().add(column);
 		}
 	}
 	
-	private void addRowsValues(List<List<String>> rowsValues) {
+	private void addRowsValues() {
 		
 		ObservableList<ObservableList<String>> rows = FXCollections.observableArrayList();
 		
@@ -80,5 +89,23 @@ public class TabView extends Tab {
 		}
 		
 		tableView.setItems(rows);
+	}
+	
+	public List<String> getColumnsNames() {
+		return columnsNames;
+	}
+	
+	public String getColumnName(int columnIndx) {
+		return columnsNames.get(columnIndx);
+	}
+	
+	public List<String> getRowValues(int rowIndx) {
+		
+		return rowsValues.get(rowIndx);
+	}
+	
+	public void setCellValue(int row, int col, String value) {
+		
+		rowsValues.get(row).set(col, value);
 	}
 }

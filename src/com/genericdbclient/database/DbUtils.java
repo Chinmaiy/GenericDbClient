@@ -7,9 +7,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +24,8 @@ import java.util.logging.Logger;
  * @author Marian F.
  * @version 1.0
  */
+
+/*should make an interface and implement it for times for databases*/
 public class DbUtils {
 	
 	private static final Logger logger = Logger.getLogger(DbUtils.class.getName());
@@ -130,11 +136,18 @@ public class DbUtils {
 				
 				String columnValue = rs.getString(indx);
 				
-				if(rs.wasNull())
+				if(rs.wasNull()) {
 					columnValue = "null";
+				}
+				else {
 				
-				row.add(columnValue);
+					ResultSetMetaData rsmd = rs.getMetaData();
+
+					if(rsmd.getColumnClassName(indx).contentEquals("java.sql.Timestamp"))
+						columnValue = getParsedDate(columnValue);
+				}
 				
+				row.add(columnValue);	
 			}
 			
 			data.add(row);
@@ -143,5 +156,56 @@ public class DbUtils {
 		DbUtils.closeAll(rs, pstmt, conn);
 		
 		return data;
+	}
+	
+	public static void updateValue
+		(String tableName, String columnName, String value, List<String> columnsNames, List<String> columnsValues) throws SQLException {
+		
+		Connection conn = DbUtils.getConnection();
+		
+		StringBuilder queryBuilder = new StringBuilder();
+		queryBuilder.append("UPDATE ").append(tableName).append(" SET ").append(columnName).append(" = ? WHERE ");
+		
+		for(int indx = 0; indx < columnsNames.size(); ++indx) {
+			
+			/*should test if values is null to insert IS NULL, not = */
+			queryBuilder.append(columnsNames.get(indx)).append(" = ").append("? AND ");
+		}
+		
+		String query = queryBuilder.substring(0, queryBuilder.length() - 5);
+		
+		PreparedStatement pstmt = conn.prepareStatement(query);
+		pstmt.setString(1, value);
+		
+		for(int indx = 0; indx < columnsValues.size(); ++indx) {
+			
+				pstmt.setString(indx + 2, columnsValues.get(indx));
+		}
+		
+		int rowsAffected = pstmt.executeUpdate();
+		
+		logger.log(Level.INFO, "Rows affected: " + rowsAffected);
+		
+		DbUtils.closeAll(null, pstmt, conn);
+	}
+	
+	/*these should go in another utility class*/
+	private static String getParsedDate(String columnValue) {
+		
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try {
+			Date date = df.parse(columnValue);
+			columnValue = df.format(date);
+			
+			df = new SimpleDateFormat("dd-MMM-yyyy");
+			columnValue = df.format(date).toUpperCase();
+			
+			return columnValue;
+			
+		} catch (ParseException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+			return null;
+		}
 	}
 }

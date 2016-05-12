@@ -54,6 +54,8 @@ public class OnTableNameClickedListener implements ChangeListener<TreeItem<Strin
 					
 					mainWindow.getTabPaneView().getTabs().add(tabView);
 					
+					mainWindow.getTabPaneView().getSelectionModel().select(tabView);
+					
 				} catch (SQLException e) {
 					
 					logger.log(Level.SEVERE, e.getMessage(), e);
