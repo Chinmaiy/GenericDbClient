@@ -11,11 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 /**
  * 
@@ -75,13 +72,13 @@ public class DbUtils {
 		}
 	}
 	
-	/*could get a map (key - name of object, value - type of object to just have this method called just once*/
 	public static List<String> getObjectNames(String objectType) throws SQLException {
 		
 		List<String> objectNames = new ArrayList<String>();
 		
 		Connection conn = DbUtils.getConnection();
 		
+		/*this should be the XML file?*/
 		String query = "SELECT OBJECT_NAME FROM USER_OBJECTS WHERE UPPER(OBJECT_TYPE) = UPPER(?)";
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		pstmt.setString(1, objectType);
@@ -110,5 +107,41 @@ public class DbUtils {
 		DbUtils.closeAll(rs, null, conn);
 		
 		return columnNames;
+	}
+	
+	public static List<List<String>> getAll(String tableName) throws SQLException {
+		
+		List<List<String>> data = new ArrayList<List<String>>();
+		
+		Connection conn = DbUtils.getConnection();
+		
+		/*this should be the XML file?*/
+		String query = String.format("SELECT * FROM %s", tableName);
+		PreparedStatement pstmt = conn.prepareStatement(query);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		int columnCount = rs.getMetaData().getColumnCount();
+		
+		while(rs.next()) {
+			List<String> row = new ArrayList<String>();
+			
+			for(int indx = 1; indx <= columnCount; ++indx) {
+				
+				String columnValue = rs.getString(indx);
+				
+				if(rs.wasNull())
+					columnValue = "null";
+				
+				row.add(columnValue);
+				
+			}
+			
+			data.add(row);
+		}
+		
+		DbUtils.closeAll(rs, pstmt, conn);
+		
+		return data;
 	}
 }

@@ -31,6 +31,7 @@ public class MainWindow {
 	private final String MAIN_ICON = "images/dbicon.png";
 	
 	private DbMetadataTreeView dbMetadataTreeView;
+	private TabPaneView tabPaneView;
 	
 	public MainWindow(Stage stage) {
 		
@@ -39,18 +40,25 @@ public class MainWindow {
 		this.decorateTitleBar();
 		this.setMinSize();
 		
-		/*should not have this kind of stuff here; id there is an exception it should appear an alert message or something*/
+		/*should not have this kind of stuff here; if there is an exception it should appear an alert message or something*/
 		try {
-			dbMetadataTreeView = new DbMetadataTreeView();
+			dbMetadataTreeView = new DbMetadataTreeView(this);
 		} catch (SQLException e) {
 			
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
-		SplitPane splitPane = new SplitPane(dbMetadataTreeView);
+		tabPaneView = new TabPaneView();
+		
+		SplitPane splitPane = new SplitPane(dbMetadataTreeView, tabPaneView);
 		
 		Scene scene = new Scene(splitPane);
 		this.stage.setScene(scene);
+	}
+	
+	public TabPaneView getTabPaneView() {
+		
+		return tabPaneView;
 	}
 	
 	private void decorateTitleBar() {

@@ -6,6 +6,7 @@ package com.genericdbclient.view;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.genericdbclient.controller.OnTableNameClickedListener;
 import com.genericdbclient.database.DbUtils;
 
 import javafx.scene.control.TreeItem;
@@ -19,9 +20,14 @@ import javafx.scene.control.TreeView;
  */
 public class DbMetadataTreeView extends TreeView<String> {
 	
+	private MainWindow mainWindow;
+	
+	/*these could be taken from a configuration file*/
 	private final String[] objectTypes = { "table", "view", "function", "procedure", "trigger"};
 	
-	public DbMetadataTreeView() throws SQLException {
+	public DbMetadataTreeView(MainWindow mainWindow) throws SQLException {
+		
+		this.mainWindow = mainWindow;
 		
 		TreeItem<String> rootItem = new TreeItem<String>("Database Metadata");
 		rootItem.setExpanded(true);
@@ -34,21 +40,25 @@ public class DbMetadataTreeView extends TreeView<String> {
 			/*should decouple this somehow; as of now the view is calling the database directly?*/
 			List<String> objectNames = DbUtils.getObjectNames(objectTypes[indx]);
 			
-			for (String name : objectNames) {
-				TreeItem<String> objectNameItem = new TreeItem<String>(name);
-				objectTypeItem.getChildren().add(objectNameItem);
+			for (String objectName : objectNames) {
 				
 				if(objectTypes[indx].contentEquals("table")) {
-					List<String> columnNames = DbUtils.getTableColumns(name);
 					
-					for (String column : columnNames) {
-						TreeItem<String> columnNameItem = new TreeItem<String>(column);
-						objectNameItem.getChildren().add(columnNameItem);
-					}
+					List<String> columnNames = DbUtils.getTableColumns(objectName);
+					
+					TableTreeItem tableNameItem = new TableTreeItem(objectName, columnNames);
+					
+					objectTypeItem.getChildren().add(tableNameItem);
+				}
+				else {
+					TreeItem<String> objectNameItem = new TreeItem<String>(objectName);
+					objectTypeItem.getChildren().add(objectNameItem);
 				}
 			}
 		}
 		
 		this.setRoot(rootItem);
+		
+		this.getSelectionModel().selectedItemProperty().addListener(new OnTableNameClickedListener(mainWindow));
 	}
 }
