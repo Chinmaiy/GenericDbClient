@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.genericdbclient.controller.OnEditCommitTableCellHandler;
+import com.genericdbclient.controller.OnEnterFilterTextFieldHandler;
 import com.genericdbclient.controller.OnInsertButtonClickedHandler;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -42,11 +43,8 @@ public class TabView extends Tab {
 	private List<TextField> columnsValuesTextFields;
 	
 	public TabView(String tabName, List<String> columnsNames, List<List<String>> rowsValues) {
-		
-		filterTextField = new TextField();
-		String filterPromptText = "Filter options - e.g. column_name > value AND ...";
-		filterTextField.setPromptText(filterPromptText);
-		filterTextField.setPrefWidth(filterPromptText.length() * 7);
+
+		initFilterTextField();
 		
 		filterButton = new Button("Filter");
 		
@@ -57,11 +55,10 @@ public class TabView extends Tab {
 		tableView.setEditable(true);
 
 		this.columnsNames = columnsNames;
-		this.rowsValues = rowsValues;
 		
 		this.addColumns();
 		
-		this.addRowsValues();
+		this.addRowsValues(rowsValues);
 		
 		this.setText(tabName);
 		
@@ -108,7 +105,9 @@ public class TabView extends Tab {
 		}
 	}
 	
-	private void addRowsValues() {
+	public void addRowsValues(List<List<String>> rowsValues) {
+
+		this.rowsValues = rowsValues;
 		
 		ObservableList<ObservableList<String>> rows = FXCollections.observableArrayList();
 		
@@ -122,6 +121,23 @@ public class TabView extends Tab {
 		tableView.setItems(rows);
 	}
 	
+	public void addRowValues(List<String> rowValues) {
+		
+		ObservableList<String> row = FXCollections.observableArrayList(rowValues);
+		
+		tableView.getItems().add(row);
+	}
+	
+	private void initFilterTextField() {
+		
+		filterTextField = new TextField();
+		String filterPromptText = "Filter options - e.g. column_name > value AND ...";
+		filterTextField.setPromptText(filterPromptText);
+		filterTextField.setPrefWidth(filterPromptText.length() * 7);
+		
+		filterTextField.setOnKeyPressed(new OnEnterFilterTextFieldHandler(this));
+	}
+	
 	private void initColumnsValuesTextFields() {
 		
 		columnsValuesTextFields = new ArrayList<TextField>();
@@ -133,13 +149,6 @@ public class TabView extends Tab {
 			
 			columnsValuesTextFields.add(textField);
 		}
-	}
-	
-	public void addRowValues(List<String> rowValues) {
-		
-		ObservableList<String> row = FXCollections.observableArrayList(rowValues);
-		
-		tableView.getItems().add(row);
 	}
 	
 	/*some getters and setters*/
@@ -171,5 +180,9 @@ public class TabView extends Tab {
 	
 	public List<TextField> getColumnsValuesTextFields() {
 		return this.columnsValuesTextFields;
+	}
+	
+	public TextField getFilterTextField() {
+		return filterTextField;
 	}
 }

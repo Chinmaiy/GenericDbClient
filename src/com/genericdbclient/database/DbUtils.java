@@ -166,7 +166,7 @@ public class DbUtils {
 		
 		StringBuilder queryBuilder = new StringBuilder();
 		
-		queryBuilder.append("SELECT * FROM ").append(tableName).append("WHERE ").append(filterClause.toUpperCase());
+		queryBuilder.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(filterClause.toUpperCase());
 		
 		PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString());
 		
