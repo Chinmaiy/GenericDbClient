@@ -158,8 +158,89 @@ public class DbUtils {
 		return data;
 	}
 	
+	public static List<List<String>> getBy(String tableName, String filterClause) throws SQLException {
+		
+		List<List<String>> data = new ArrayList<List<String>>();
+		
+		Connection conn = DbUtils.getConnection();
+		
+		StringBuilder queryBuilder = new StringBuilder();
+		
+		queryBuilder.append("SELECT * FROM ").append(tableName).append("WHERE ").append(filterClause.toUpperCase());
+		
+		PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString());
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		int columnCount = rs.getMetaData().getColumnCount();
+		
+		while(rs.next()) {
+			List<String> row = new ArrayList<String>();
+			
+			for(int indx = 1; indx <= columnCount; ++indx) {
+				
+				String columnValue = rs.getString(indx);
+				
+				if(rs.wasNull()) {
+					columnValue = "null";
+				}
+				else {
+				
+					ResultSetMetaData rsmd = rs.getMetaData();
+
+					if(rsmd.getColumnClassName(indx).contentEquals("java.sql.Timestamp"))
+						columnValue = getParsedDate(columnValue);
+				}
+				
+				row.add(columnValue);	
+			}
+			
+			data.add(row);
+		}
+		
+		DbUtils.closeAll(rs, pstmt, conn);
+		
+		return data;
+	}
+	
+	public static void insert(String tableName, List<String> columnsNames, List<String> columnsValues) throws SQLException {
+		
+		Connection conn = DbUtils.getConnection();
+		
+		StringBuilder queryBuilder = new StringBuilder();
+		
+		queryBuilder.append("INSERT INTO ").append(tableName).append(" (");
+		
+		for (String column : columnsNames)
+			queryBuilder.append(column).append(",");
+		
+		queryBuilder.deleteCharAt(queryBuilder.length()-1);
+		
+		queryBuilder.append(") VALUES(");
+		
+		int columnCount = columnsNames.size();
+		for (int indx = 0; indx < columnCount; ++indx)
+			queryBuilder.append("?,");
+		
+		queryBuilder.deleteCharAt(queryBuilder.length()-1).append(")");
+		
+		PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString());
+		
+		for(int indx = 0; indx < columnCount; ++indx) {
+			
+			pstmt.setString(indx + 1, columnsValues.get(indx));
+		}
+		
+		int rowsAffected = pstmt.executeUpdate();
+		
+		logger.log(Level.INFO, "Rows affected: " + rowsAffected);
+		
+		DbUtils.closeAll(null, pstmt, conn);
+	}
+	
 	public static void updateValue
-		(String tableName, String columnName, String value, List<String> columnsNames, List<String> columnsValues) throws SQLException {
+		(String tableName, String columnName, String value, List<String> columnsNames, List<String> columnsValues) 
+				throws SQLException {
 		
 		Connection conn = DbUtils.getConnection();
 		
