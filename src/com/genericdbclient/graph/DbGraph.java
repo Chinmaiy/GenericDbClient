@@ -5,7 +5,6 @@ package com.genericdbclient.graph;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.graphstream.graph.Graph;
@@ -48,6 +47,12 @@ public class DbGraph {
 				
 				tableNode = graph.getNode(referencedTable);
 				tableNode.setAttribute("ui.label", referencedTable);
+			}
+			
+			if(referencedTables.isEmpty()) {
+				graph.addNode(table);
+				Node tableNode = graph.getNode(table);
+				tableNode.setAttribute("ui.label", table);
 			}
 		}
 		

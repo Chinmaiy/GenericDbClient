@@ -198,6 +198,11 @@ public class TabView extends Tab {
 		return columnsNames.get(columnIndex);
 	}
 	
+	public List<List<String>> getRowsValues() {
+		
+		return rowsValues;
+	}
+	
 	public List<String> getRowValues(int rowIndex) {
 		
 		return rowsValues.get(rowIndex);

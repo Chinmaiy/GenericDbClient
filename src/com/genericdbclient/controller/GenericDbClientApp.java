@@ -3,11 +3,6 @@
  */
 package com.genericdbclient.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.genericdbclient.database.DbUtils;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 

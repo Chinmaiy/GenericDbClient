@@ -2,9 +2,57 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry exported="true" kind="lib" path="lib/dynamicreports-core-4.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/mybatis-3.4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="lib/dynamicreports-core-4.1.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/mybatis-3.4.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/ojdbc6.jar"/>
 	<classpathentry kind="lib" path="lib/gs-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-6.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/avalon-framework-impl-4.2.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/barbecue-1.5-beta1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/barcode4j-2.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-anim-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-awt-util-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-bridge-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-css-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-dom-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-ext-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-gvt-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-parser-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-script-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-svg-dom-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-util-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/batik-xml-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/bcprov-jdk14-138.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/commons-beanutils-1.9.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/commons-codec-1.5.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/commons-lang-2.5.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/core-2.3.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/dynamicreports-core-4.1.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/ecj-4.3.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/gs-core-1.3.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/hsqldb-1.8.0.10.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/itext-2.1.7.js4.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/jackson-annotations-2.1.4.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/jackson-core-2.1.4.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/jackson-databind-2.1.4.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/jasperreports-6.2.0.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/json-20080701.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/jxl-2.6.10.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/poi-3.10.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/serializer-2.7.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/spring-beans-2.5.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/spring-core-2.5.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/velocity-1.7.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/xalan-2.7.1.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/xml-apis-1.3.04.jar"/>
+	<classpathentry kind="lib" path="E:/Computer Science/Java/Projects/JavaLabs2015/GenericDatabaseClient/lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

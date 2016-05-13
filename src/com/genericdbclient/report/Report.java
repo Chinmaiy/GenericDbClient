@@ -8,10 +8,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.genericdbclient.database.DbUtils;
 import com.genericdbclient.view.TabView;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
@@ -38,7 +40,7 @@ public class Report {
 		this.tabView = tabView;
 	}
 	
-	public void build() {
+	public void build() throws SQLException, DRException {
 		
 		this.report = DynamicReports.report();
 		
@@ -48,16 +50,17 @@ public class Report {
 			report.addColumn(DynamicReports.col.column(column, column, DataTypes.stringType()));
 		}
 		
-		report.addTitle(Components.text(tabView.getText()));
+		report.addTitle(Components.text(tabView.getText())).setDataSource("SELECT * FROM " + tabView.getText(), 
+				DbUtils.getConnection());
 		
-		//report.setDataSource(FXCollections.observableArrayList());
+		report.show();
 	}
 	
 	public void write(File file) {
 		try {
-            this.report.toPdf(new FileOutputStream(file.getAbsolutePath() + ".pdf"));
-            Desktop desktop = Desktop.getDesktop();
-            desktop.open(file);
+            this.report.toPdf(new FileOutputStream(file.getAbsolutePath()));
+           /* Desktop desktop = Desktop.getDesktop();
+            desktop.open(file);*/
         } catch (DRException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         } catch (FileNotFoundException e) {

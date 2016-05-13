@@ -15,6 +15,7 @@ import javafx.stage.Stage;
  */
 public class MainController {
 	
+	@SuppressWarnings("unused")
 	private MainWindow mainWindow;
 
 	public MainController() {}

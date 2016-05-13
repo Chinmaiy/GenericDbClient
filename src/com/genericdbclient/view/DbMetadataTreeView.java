@@ -20,6 +20,7 @@ import javafx.scene.control.TreeView;
  */
 public class DbMetadataTreeView extends TreeView<String> {
 	
+	@SuppressWarnings("unused")
 	private MainWindow mainWindow;
 	
 	/*these could be taken from a configuration file*/
