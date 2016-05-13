@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * @version 1.0
  */
 
-/*should make an interface and implement it for times for databases*/
+/*this is the interface??*/
 /*should have an querybuilder class*/
 public class DbUtils {
 	
@@ -264,7 +264,7 @@ public class DbUtils {
 		
 		String query = queryBuilder.substring(0, queryBuilder.length() - 5);
 		
-		logger.log(Level.INFO, query);
+		logger.log(Level.INFO, "Updated query: " + query);
 		
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		pstmt.setString(1, value);
@@ -305,12 +305,14 @@ public class DbUtils {
 		
 		String query = queryBuilder.substring(0, queryBuilder.length() - 5);
 		
+		logger.log(Level.INFO, "Delete query: " + query);
+		
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		
 		for(int indx = 0; indx < columnsValues.size(); ++indx) {
 
 			if(!columnsValues.get(indx).contentEquals("null"))
-				pstmt.setString(indx + 2 - nullCount, columnsValues.get(indx));
+				pstmt.setString(indx + 1 - nullCount, columnsValues.get(indx));
 		}
 
 		int rowsAffected = pstmt.executeUpdate();
