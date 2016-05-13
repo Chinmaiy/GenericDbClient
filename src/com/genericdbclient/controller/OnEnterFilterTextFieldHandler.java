@@ -47,7 +47,7 @@ public class OnEnterFilterTextFieldHandler implements EventHandler<KeyEvent> {
 				
 				tableView.getItems().clear();
 				
-				tabView.addRowsValues(data);
+				tabView.setRowsValues(data);
 				
 			} catch (SQLException e) {
 				
@@ -68,7 +68,7 @@ public class OnEnterFilterTextFieldHandler implements EventHandler<KeyEvent> {
 					
 					tableView.getItems().clear();
 					
-					tabView.addRowsValues(data);
+					tabView.setRowsValues(data);
 					
 				} catch (SQLException e) {
 					logger.log(Level.SEVERE, e.getMessage(), e);

@@ -29,6 +29,10 @@ public class DbMetadataTreeView extends TreeView<String> {
 		
 		this.mainWindow = mainWindow;
 		
+		this.setMaxWidth(200);
+		this.setPrefWidth(200);
+		this.setMinWidth(200);
+		
 		TreeItem<String> rootItem = new TreeItem<String>("Database Metadata");
 		rootItem.setExpanded(true);
 		

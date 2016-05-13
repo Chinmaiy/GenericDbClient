@@ -11,11 +11,11 @@ public class CustomVBox extends VBox {
 
 	public CustomVBox() {
 		
-		this.setAlignment(Pos.CENTER);
+		this.setAlignment(Pos.CENTER_LEFT);
 		/*this.setPrefWidth(140);
 		this.setMinWidth(140);
 		this.setMaxWidth(200);*/
-		this.setSpacing(20);
+		this.setSpacing(10);
 		this.setPadding(new Insets(10,5,0,10));
 		this.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 	}

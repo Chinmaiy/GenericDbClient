@@ -48,7 +48,7 @@ public class MainWindow {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
-		tabPaneView = new TabPaneView();
+		tabPaneView = new TabPaneView(this);
 		
 		SplitPane splitPane = new SplitPane(dbMetadataTreeView, tabPaneView);
 		
@@ -71,5 +71,9 @@ public class MainWindow {
 
 		stage.setMinWidth(MIN_WIDTH);
 		stage.setMinHeight(MIN_HEIGHT);
+	}
+	
+	public Stage getStage() {
+		return stage;
 	}
 }

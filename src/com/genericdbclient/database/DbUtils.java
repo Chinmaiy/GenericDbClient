@@ -4,6 +4,7 @@
 package com.genericdbclient.database;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +27,7 @@ import java.util.logging.Logger;
  */
 
 /*should make an interface and implement it for times for databases*/
+/*should have an querybuilder class*/
 public class DbUtils {
 	
 	private static final Logger logger = Logger.getLogger(DbUtils.class.getName());
@@ -238,6 +240,7 @@ public class DbUtils {
 		DbUtils.closeAll(null, pstmt, conn);
 	}
 	
+	/*should test for null differently when with Oracle connection*/
 	public static void updateValue
 		(String tableName, String columnName, String value, List<String> columnsNames, List<String> columnsValues) 
 				throws SQLException {
@@ -247,27 +250,93 @@ public class DbUtils {
 		StringBuilder queryBuilder = new StringBuilder();
 		queryBuilder.append("UPDATE ").append(tableName).append(" SET ").append(columnName).append(" = ? WHERE ");
 		
+		int nullCount = 0;
 		for(int indx = 0; indx < columnsNames.size(); ++indx) {
 			
-			/*should test if values is null to insert IS NULL, not = */
-			queryBuilder.append(columnsNames.get(indx)).append(" = ").append("? AND ");
+			queryBuilder.append(columnsNames.get(indx));
+			if(columnsValues.get(indx).contentEquals("null")) {
+				queryBuilder.append(" IS NULL AND ");
+				++nullCount;
+			}
+			else
+				queryBuilder.append(" = ").append("? AND ");
 		}
 		
 		String query = queryBuilder.substring(0, queryBuilder.length() - 5);
+		
+		logger.log(Level.INFO, query);
 		
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		pstmt.setString(1, value);
 		
 		for(int indx = 0; indx < columnsValues.size(); ++indx) {
 			
-				pstmt.setString(indx + 2, columnsValues.get(indx));
+			if(!columnsValues.get(indx).contentEquals("null"))
+				pstmt.setString(indx + 2 - nullCount, columnsValues.get(indx));
 		}
 		
 		int rowsAffected = pstmt.executeUpdate();
 		
-		logger.log(Level.INFO, "Rows affected: " + rowsAffected);
+		logger.log(Level.INFO, "Updated Rows affected: " + rowsAffected);
 		
 		DbUtils.closeAll(null, pstmt, conn);
+	}
+	
+	/*should test for null differently when working with Oracle connection*/
+	public static void delete(String tableName, List<String> columnsNames, List<String> columnsValues) throws SQLException {
+		
+		Connection conn = DbUtils.getConnection();
+		
+		StringBuilder queryBuilder = new StringBuilder();
+		queryBuilder.append("DELETE FROM ").append(tableName).append(" WHERE ");
+		
+		int nullCount = 0;
+		for(int indx = 0; indx < columnsNames.size(); ++indx) {
+			
+			queryBuilder.append(columnsNames.get(indx));
+			
+			if(columnsValues.get(indx).contentEquals("null")) {
+				queryBuilder.append(" IS NULL AND ");
+				++nullCount;
+			}
+			else
+				queryBuilder.append(" = ").append("? AND ");
+		}
+		
+		String query = queryBuilder.substring(0, queryBuilder.length() - 5);
+		
+		PreparedStatement pstmt = conn.prepareStatement(query);
+		
+		for(int indx = 0; indx < columnsValues.size(); ++indx) {
+
+			if(!columnsValues.get(indx).contentEquals("null"))
+				pstmt.setString(indx + 2 - nullCount, columnsValues.get(indx));
+		}
+
+		int rowsAffected = pstmt.executeUpdate();
+
+		logger.log(Level.INFO, "Delete rows affected: " + rowsAffected);
+
+		DbUtils.closeAll(null, pstmt, conn);
+		
+	}
+	
+	public static List<String> getReferencedTables(String tableName) throws SQLException {
+		
+		List<String> referencedTables = new ArrayList<String>();
+		
+		Connection conn = DbUtils.getConnection();
+		
+		DatabaseMetaData dbmd = conn.getMetaData();
+		
+		ResultSet rs = dbmd.getExportedKeys(conn.getCatalog(), null, tableName);
+		
+		while (rs.next())
+			referencedTables.add(rs.getString("FKTABLE_NAME"));
+		
+		DbUtils.closeAll(rs, null, conn);
+		
+		return referencedTables;
 	}
 	
 	/*these should go in another utility class*/

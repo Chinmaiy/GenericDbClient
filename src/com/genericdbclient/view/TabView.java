@@ -6,15 +6,17 @@ package com.genericdbclient.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.genericdbclient.controller.OnDbGraphButtonClickedHandler;
+import com.genericdbclient.controller.OnDeleteButtonClickedHandler;
 import com.genericdbclient.controller.OnEditCommitTableCellHandler;
 import com.genericdbclient.controller.OnEnterFilterTextFieldHandler;
 import com.genericdbclient.controller.OnInsertButtonClickedHandler;
+import com.genericdbclient.controller.OnReportButtonClickedHandler;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,22 +33,37 @@ import javafx.util.Callback;
  */
 public class TabView extends Tab {
 	
+	private CustomButton reportButton;
+	private CustomButton dbGraphButton;
+	
 	private TextField filterTextField;
-	private Button filterButton;
+	private CustomButton filterButton;
 
 	private TableView<ObservableList<String>> tableView;
 	
 	private List<String> columnsNames;
 	private List<List<String>> rowsValues;
 	
-	private Button insertButton;
+	private CustomButton insertButton;
 	private List<TextField> columnsValuesTextFields;
 	
+	private CustomButton deleteSelectedButton;
+	
 	public TabView(String tabName, List<String> columnsNames, List<List<String>> rowsValues) {
+		
+		reportButton = new CustomButton("Report");
+		reportButton.setOnMouseClicked(new OnReportButtonClickedHandler(this));
+		
+		dbGraphButton = new CustomButton("Graph");
+		dbGraphButton.setOnMouseClicked(new OnDbGraphButtonClickedHandler(this));
+		
+		CustomHBox fancyButtonsBox = new CustomHBox();
+		fancyButtonsBox.getChildren().addAll(reportButton, dbGraphButton);
 
 		initFilterTextField();
 		
-		filterButton = new Button("Filter");
+		filterButton = new CustomButton("Filter");
+		filterButton.setMinWidth(filterButton.getText().length() * 7 + 20);
 		
 		CustomHBox filterBox = new CustomHBox();
 		filterBox.getChildren().addAll(filterTextField, filterButton);
@@ -58,21 +75,25 @@ public class TabView extends Tab {
 		
 		this.addColumns();
 		
-		this.addRowsValues(rowsValues);
+		this.setRowsValues(rowsValues);
 		
 		this.setText(tabName);
 		
 		this.initColumnsValuesTextFields();
 		
-		insertButton = new Button("Insert");
+		insertButton = new CustomButton("Insert");
+		insertButton.setMinWidth(insertButton.getText().length() * 7 + 20);
 		insertButton.setOnMouseClicked(new OnInsertButtonClickedHandler(this));
 		
 		CustomHBox insertBox = new CustomHBox();
-		insertBox.getChildren().addAll(columnsValuesTextFields);
 		insertBox.getChildren().add(insertButton);
+		insertBox.getChildren().addAll(columnsValuesTextFields);
+		
+		deleteSelectedButton = new CustomButton("Delete Selected");
+		deleteSelectedButton.setOnMouseClicked(new OnDeleteButtonClickedHandler(this));
 		
 		CustomVBox bigBox = new CustomVBox();
-		bigBox.getChildren().addAll(filterBox, tableView, insertBox);
+		bigBox.getChildren().addAll(fancyButtonsBox, filterBox, tableView, insertBox, deleteSelectedButton);
 		
 		this.setContent(bigBox);
 	}
@@ -105,7 +126,7 @@ public class TabView extends Tab {
 		}
 	}
 	
-	public void addRowsValues(List<List<String>> rowsValues) {
+	public void setRowsValues(List<List<String>> rowsValues) {
 
 		this.rowsValues = rowsValues;
 		
@@ -126,6 +147,15 @@ public class TabView extends Tab {
 		ObservableList<String> row = FXCollections.observableArrayList(rowValues);
 		
 		tableView.getItems().add(row);
+		
+		this.rowsValues.add(rowValues);
+	}
+	
+	public void removeRowValues(int rowIndex) {
+		
+		tableView.getItems().remove(rowIndex);
+		
+		this.rowsValues.remove(rowIndex);
 	}
 	
 	private void initFilterTextField() {
@@ -164,13 +194,13 @@ public class TabView extends Tab {
 		return columnsNames;
 	}
 	
-	public String getColumnName(int columnIndx) {
-		return columnsNames.get(columnIndx);
+	public String getColumnName(int columnIndex) {
+		return columnsNames.get(columnIndex);
 	}
 	
-	public List<String> getRowValues(int rowIndx) {
+	public List<String> getRowValues(int rowIndex) {
 		
-		return rowsValues.get(rowIndx);
+		return rowsValues.get(rowIndex);
 	}
 	
 	public void setCellValue(int row, int col, String value) {
