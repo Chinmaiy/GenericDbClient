@@ -250,14 +250,11 @@ public class DbUtils {
 		StringBuilder queryBuilder = new StringBuilder();
 		queryBuilder.append("UPDATE ").append(tableName).append(" SET ").append(columnName).append(" = ? WHERE ");
 		
-		int nullCount = 0;
 		for(int indx = 0; indx < columnsNames.size(); ++indx) {
 			
 			queryBuilder.append(columnsNames.get(indx));
-			if(columnsValues.get(indx).contentEquals("null")) {
+			if(columnsValues.get(indx).contentEquals("null"))
 				queryBuilder.append(" IS NULL AND ");
-				++nullCount;
-			}
 			else
 				queryBuilder.append(" = ").append("? AND ");
 		}
@@ -269,10 +266,11 @@ public class DbUtils {
 		PreparedStatement pstmt = conn.prepareStatement(query);
 		pstmt.setString(1, value);
 		
+		int currentPlaceholder = 2;
 		for(int indx = 0; indx < columnsValues.size(); ++indx) {
 			
 			if(!columnsValues.get(indx).contentEquals("null"))
-				pstmt.setString(indx + 2 - nullCount, columnsValues.get(indx));
+				pstmt.setString(currentPlaceholder++, columnsValues.get(indx));
 		}
 		
 		int rowsAffected = pstmt.executeUpdate();
@@ -290,15 +288,12 @@ public class DbUtils {
 		StringBuilder queryBuilder = new StringBuilder();
 		queryBuilder.append("DELETE FROM ").append(tableName).append(" WHERE ");
 		
-		int nullCount = 0;
 		for(int indx = 0; indx < columnsNames.size(); ++indx) {
 			
 			queryBuilder.append(columnsNames.get(indx));
 			
-			if(columnsValues.get(indx).contentEquals("null")) {
+			if(columnsValues.get(indx).contentEquals("null"))
 				queryBuilder.append(" IS NULL AND ");
-				++nullCount;
-			}
 			else
 				queryBuilder.append(" = ").append("? AND ");
 		}
@@ -308,11 +303,12 @@ public class DbUtils {
 		logger.log(Level.INFO, "Delete query: " + query);
 		
 		PreparedStatement pstmt = conn.prepareStatement(query);
-		
+
+		int currentPlaceholder = 1;
 		for(int indx = 0; indx < columnsValues.size(); ++indx) {
 
 			if(!columnsValues.get(indx).contentEquals("null"))
-				pstmt.setString(indx + 1 - nullCount, columnsValues.get(indx));
+				pstmt.setString(currentPlaceholder++, columnsValues.get(indx));
 		}
 
 		int rowsAffected = pstmt.executeUpdate();

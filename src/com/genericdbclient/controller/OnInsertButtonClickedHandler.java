@@ -55,7 +55,5 @@ public class OnInsertButtonClickedHandler implements EventHandler<MouseEvent> {
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
-	}
-
-	
+	}	
 }
