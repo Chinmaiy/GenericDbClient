@@ -47,13 +47,14 @@ public class OnInsertButtonClickedHandler implements EventHandler<MouseEvent> {
 			columnTextField.clear();
 		}
 		
-		tabView.addRowValues(newRowValues);
-		
 		/*add to database*/
 		try {
 			DbUtils.insert(tabView.getText(), tabView.getColumnsNames(), newRowValues);
+
+			tabView.addRowValues(newRowValues);
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 		}
+		
 	}	
 }

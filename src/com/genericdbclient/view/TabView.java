@@ -144,15 +144,13 @@ public class TabView extends Tab {
 	
 	public void addRowValues(List<String> rowValues) {
 		
-		ObservableList<String> row = FXCollections.observableArrayList();
-		
-		for (String string : rowValues) {
+		for (int colIndx = 0; colIndx < rowValues.size(); ++colIndx) {
 			
-			if(string == null || string.contentEquals(""))
-				row.add("null");
-			else
-				row.add(string);
+			if(rowValues.get(colIndx) == null || rowValues.get(colIndx).contentEquals(""))
+				rowValues.set(colIndx, "null");
 		}
+		
+		ObservableList<String> row = FXCollections.observableArrayList(rowValues);
 		
 		tableView.getItems().add(row);
 		
