@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -230,12 +231,17 @@ public class DbUtils {
 		
 		for(int indx = 0; indx < columnCount; ++indx) {
 			
-			pstmt.setString(indx + 1, columnsValues.get(indx));
+			if(columnsValues.get(indx).contentEquals("null") || columnsValues.get(indx).contentEquals(""))
+				pstmt.setNull(indx + 1, Types.NULL);
+			else
+				pstmt.setString(indx + 1, columnsValues.get(indx));
 		}
 		
 		int rowsAffected = pstmt.executeUpdate();
 		
 		logger.log(Level.INFO, "Rows affected: " + rowsAffected);
+		
+		conn.commit();
 		
 		DbUtils.closeAll(null, pstmt, conn);
 	}
@@ -253,7 +259,7 @@ public class DbUtils {
 		for(int indx = 0; indx < columnsNames.size(); ++indx) {
 			
 			queryBuilder.append(columnsNames.get(indx));
-			if(columnsValues.get(indx).contentEquals("null"))
+			if(columnsValues.get(indx).contentEquals("null") || columnsValues.get(indx).contentEquals(""))
 				queryBuilder.append(" IS NULL AND ");
 			else
 				queryBuilder.append(" = ").append("? AND ");
@@ -269,7 +275,7 @@ public class DbUtils {
 		int currentPlaceholder = 2;
 		for(int indx = 0; indx < columnsValues.size(); ++indx) {
 			
-			if(!columnsValues.get(indx).contentEquals("null"))
+			if(!columnsValues.get(indx).contentEquals("null") && !columnsValues.get(indx).contentEquals(""))
 				pstmt.setString(currentPlaceholder++, columnsValues.get(indx));
 		}
 		
@@ -292,7 +298,9 @@ public class DbUtils {
 			
 			queryBuilder.append(columnsNames.get(indx));
 			
-			if(columnsValues.get(indx).contentEquals("null"))
+			if(columnsValues.get(indx).contentEquals("null") 
+					|| columnsValues.get(indx).contentEquals("")
+					|| columnsValues.get(indx) == null)
 				queryBuilder.append(" IS NULL AND ");
 			else
 				queryBuilder.append(" = ").append("? AND ");
@@ -307,8 +315,12 @@ public class DbUtils {
 		int currentPlaceholder = 1;
 		for(int indx = 0; indx < columnsValues.size(); ++indx) {
 
-			if(!columnsValues.get(indx).contentEquals("null"))
+			if(!columnsValues.get(indx).contentEquals("null") 
+					&& !columnsValues.get(indx).contentEquals("")
+					&& !(columnsValues.get(indx) == null)) {
 				pstmt.setString(currentPlaceholder++, columnsValues.get(indx));
+				logger.log(Level.INFO, "set " + columnsValues.get(indx));
+			}
 		}
 
 		int rowsAffected = pstmt.executeUpdate();
